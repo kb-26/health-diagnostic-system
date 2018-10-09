@@ -20,7 +20,7 @@ X = dataset[:,1:].astype(int)
 Y = dataset[:,0]
 #print(dataframe)
 
-
+#outline of the model
 def diag_model():
     model = Sequential()
     model.add(Dense(300, input_dim=403, activation='relu'))
