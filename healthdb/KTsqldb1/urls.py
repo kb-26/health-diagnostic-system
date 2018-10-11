@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name="Index"),
     path('home', views.homePage, name="HomeScreen"),
     path('plogin', views.patLogin, name="PatientLogin"),
-    ##path('patWelcome', views.patientHome, name="PatWelcome"),
-    path('dlogin', views.docLogin, name="DoctorLogin")
+    path('dlogin', views.docLogin, name="DoctorLogin"),
+    path('PHome', views.patHome, name= "PatientHome"),
+    path('DHome', views.docHome, name= "DoctorHome")
 ]

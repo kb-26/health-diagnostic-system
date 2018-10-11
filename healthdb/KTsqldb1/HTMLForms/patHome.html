@@ -1,6 +1,15 @@
 <html>
 <h1>
-    Welcome, patname
+    Welcome, {{patname}}
 </h1>
-<p>TODO</p>
+<form action="/healthdb/PHome" method="post">
+    {%csrf_token%}
+    <br>
+    <input type="submit" name="sched" value="Schedule Appointment">
+    <br>
+    <br>
+    <input type="submit" name="view" value="View Appointments">
+    <br>
+
+</form>
 </html>
