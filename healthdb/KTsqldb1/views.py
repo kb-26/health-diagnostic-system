@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import *
 import sys
-sys.path.append('D:\GitHub\health-diagnostic-system\healthdb\KTsqldb1\ServiceLogic')
-from queries import login
+
+from KTsqldb1.ServiceLogic.queries import login
 # Create your views here.
 
 def index(request):
