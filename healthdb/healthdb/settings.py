@@ -55,8 +55,8 @@ ROOT_URLCONF = 'healthdb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['D:\Documents\PycharmProjects\WebProject2\healthdb\KTsqldb1\HTMLForms',
-                 'D:\Documents\PycharmProjects\WebProject2\healthdb\KTsqldb1\ServiceLogic'], ### ADD DIRECTORY HERE
+        'DIRS': ['KTsqldb1\HTMLForms',
+                 'KTsqldb1\ServiceLogic'], ### ADD DIRECTORY HERE
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
