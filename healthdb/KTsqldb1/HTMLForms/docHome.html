@@ -1,0 +1,9 @@
+<html>
+<h1>
+    Welcome, {{docname}}
+</h1>
+<form action="/healthdb/PHome" method="post">
+    {%csrf_token%}
+    {{form}}
+</form>
+</html>
