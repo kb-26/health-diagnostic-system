@@ -31,3 +31,11 @@ class Treatment(models.Model):
     Duration = models.IntegerField(default= 1)
     Name = models.CharField(max_length=50)
     diagID = models.ForeignKey(Diagnosis, on_delete= models.CASCADE)
+
+class PatientCredentials(models.Model):
+    UserName = models.CharField(primary_key=True, max_length=50)
+    Password = models.CharField( max_length=50)
+
+class DoctorCredentials(models.Model):
+    UserName = models.CharField(primary_key=True, max_length=50)
+    Password = models.CharField( max_length=50)

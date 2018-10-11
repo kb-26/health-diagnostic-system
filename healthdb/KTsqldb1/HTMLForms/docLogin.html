@@ -1,0 +1,9 @@
+<html>
+<h1>Doctor Login</h1>
+<form action="/healthdb/dlogin" method="post">
+    {% csrf_token %}
+    {{form}}
+    <br><br>
+    <input type="submit" value="Login">
+</form>
+</html>
