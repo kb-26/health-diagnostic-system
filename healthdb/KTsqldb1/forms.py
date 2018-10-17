@@ -7,10 +7,13 @@ FRUIT_CHOICES= [
     ('mango', 'Mangoes'),
     ('honeydew', 'Honeydews'),
     ]
+
+#basic login form
 class loginForm(forms.Form):
     uname = forms.CharField(label="Username ", max_length=100, required= False)
-    pwd = forms.CharField(label=mark_safe("<br><br>Password "), max_length=100, widget=forms.PasswordInput, required= False) ##Password field
+    pwd = forms.CharField(label=mark_safe("Password "), max_length=100, widget=forms.PasswordInput, required= False) ##Password field
 
+#Doctor home page
 class DocHomeForm(forms.Form):
     pendingApp = forms.CharField(label="Pending Appointments ",widget=forms.Select(choices=FRUIT_CHOICES))
     reqApp = forms.CharField(label="Appointment Requests ",widget=forms.Select(choices='Select'))
