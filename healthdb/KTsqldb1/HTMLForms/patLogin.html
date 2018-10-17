@@ -9,10 +9,22 @@
 {% load widget_tweaks %}
 <form action="/healthdb/plogin" method="post">
     {% csrf_token %}
+
+    <!-- Render hidden fields-->
       {% for hidden_field in form.hidden_fields %}
         {{ hidden_field }}
       {% endfor %}
 
+    <!-- Field alerts -->
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    <!-- Render visible  fields-->
      {% for field in form.visible_fields %}
         <div class="form-group">
           {{ field.label_tag }}

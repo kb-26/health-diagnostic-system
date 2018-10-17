@@ -10,8 +10,8 @@ FRUIT_CHOICES= [
 
 #basic login form
 class loginForm(forms.Form):
-    uname = forms.CharField(label="Username ", max_length=100, required= False)
-    pwd = forms.CharField(label=mark_safe("Password "), max_length=100, widget=forms.PasswordInput, required= False) ##Password field
+    uname = forms.CharField(label="Username ", max_length=100)
+    pwd = forms.CharField(label=mark_safe("Password "), max_length=100, widget=forms.PasswordInput) ##Password field
 
 #Doctor home page
 class DocHomeForm(forms.Form):
