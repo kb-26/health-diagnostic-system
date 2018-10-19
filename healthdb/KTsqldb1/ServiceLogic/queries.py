@@ -1,4 +1,5 @@
 from django.db import connection
+from KTsqldb1.models import Doctor
 
 def login(uname, pwd, type):    ##type = 'P' for patient, 'D' for doctor
     if(type=='P'):
@@ -23,3 +24,10 @@ def login(uname, pwd, type):    ##type = 'P' for patient, 'D' for doctor
             if not res or not len(res):
                 return False
             return True
+
+## returns a list of all doctors
+def getDocList():
+    docList = Doctor.objects.values_list('DoctorID','Name')
+    for ele in docList:
+        print(ele)
+    return docList

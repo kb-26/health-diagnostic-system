@@ -1,19 +1,17 @@
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-  <title>Doctor Login</title>
+  <title>Patient Login</title>
 </head>
 
 {% load widget_tweaks %}
-
-<h1>Doctor Login</h1>
-<form action="/healthdb/dlogin" method="post">
+<h1>Schedule Appointment</h1>
+<form action="/healthdb/plogin" method="post">
     {% csrf_token %}
 
-     <!-- Render hidden fields-->
+    <!-- Render hidden fields-->
       {% for hidden_field in form.hidden_fields %}
         {{ hidden_field }}
       {% endfor %}
@@ -54,7 +52,7 @@
           {% endif %}
         </div>
      {% endfor %}
-
-  <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Cancel</button>
+    <button type="submit" class="btn btn-primary float-right">Submit</button>
 </form>
 </html>

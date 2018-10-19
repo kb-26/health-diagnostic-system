@@ -1,14 +1,21 @@
 <html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Patient Home</title>
+</head>
+
 <h1>
     Welcome, {{patname}}
 </h1>
 <form action="/healthdb/PHome" method="post">
     {%csrf_token%}
     <br>
-    <input type="submit" name="sched" value="Schedule Appointment">
+    <button type="submit" name="sched" class="btn btn-info btn-block">Schedule Appointment</button>
     <br>
     <br>
-    <input type="submit" name="view" value="View Appointments">
+        <button type="submit" name="view" class="btn btn-info btn-block">View Appointments</button>
     <br>
 
 </form>

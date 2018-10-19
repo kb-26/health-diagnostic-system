@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import *
+from .constants import res, UserName
 import sys
 
 from KTsqldb1.ServiceLogic.queries import login
@@ -15,14 +16,13 @@ def homePage(request):
 def patientHome(request):
     return render(request, 'patHome.html')
 
-UserName = ''
-
 def patLogin(request):
     if request.method == 'POST':
         form = loginForm(request.POST)
         if form.is_valid():
             uname = form.cleaned_data["uname"]
             pwd = form.cleaned_data["pwd"]
+            global res
             res = login(uname, pwd, type= 'P')
             if res:
                 global UserName
@@ -68,3 +68,9 @@ def docHome(request):
     form = DocHomeForm()
     
     return render(request, 'docHome.html', {'docname': UserName},{'form':form})
+
+def schedAppointment(request):
+    if request.method=='POST':
+        return
+    form = SchedAppointment()
+    return render(request, 'schedAppointment.html', {'form':form})
