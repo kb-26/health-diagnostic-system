@@ -1,5 +1,9 @@
 from django import forms
+import datetime
 from django.utils.safestring import mark_safe
+from django.forms.widgets import SelectDateWidget
+
+
 from KTsqldb1.ServiceLogic.queries import getDocList
 from .constants import res
 
@@ -34,6 +38,6 @@ class PatHomeForm(forms.Form):
 
 # Appointment Schedule form
 class SchedAppointment(forms.Form):
-    dat = forms.CharField(label= "Date", widget= forms.DateInput)
-    time = forms.CharField(label= "Time", widget= forms.TimeInput)
+    dat = forms.DateField(label= "Date", widget= SelectDateWidget)
+    time = forms.TimeField(label= "Time")
     docs = forms.ChoiceField(widget= forms.Select, choices= getDocList())
