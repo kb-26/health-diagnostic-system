@@ -35,7 +35,9 @@ class Treatment(models.Model):
 class PatientCredentials(models.Model):
     UserName = models.CharField(primary_key=True, max_length=50)
     Password = models.CharField( max_length=50)
+    PatientID = models.ForeignKey(Patient, on_delete= models.CASCADE, default="p001")
 
 class DoctorCredentials(models.Model):
     UserName = models.CharField(primary_key=True, max_length=50)
     Password = models.CharField( max_length=50)
+    DoctorID = models.ForeignKey(Doctor, on_delete=models.CASCADE, default= "d001")

@@ -2,6 +2,7 @@ from django import forms
 import datetime
 from django.utils.safestring import mark_safe
 from django.forms.widgets import SelectDateWidget
+from django.core.validators import MaxValueValidator
 
 
 from KTsqldb1.ServiceLogic.queries import getDocList
@@ -41,3 +42,12 @@ class SchedAppointment(forms.Form):
     dat = forms.DateField(label= "Date", widget= SelectDateWidget)
     time = forms.TimeField(label= "Time")
     docs = forms.ChoiceField(widget= forms.Select, choices= getDocList())
+
+#     Doctor Registration
+class docReg(forms.Form):
+    uname = forms.CharField(label="Username", max_length= 30)
+    pwd = forms.CharField(label=mark_safe("Password "), max_length=30, widget=forms.PasswordInput)
+    pwd_conf = forms.CharField(label=mark_safe("Confirm Password "), max_length=30, widget=forms.PasswordInput)
+    nam = forms.CharField(label="Name", max_length= 30)
+    clinic = forms.CharField(label="Clinic", max_length= 30)
+    phone = forms.IntegerField(label="Mobile No (+91)",validators= [MaxValueValidator(9999999999)])

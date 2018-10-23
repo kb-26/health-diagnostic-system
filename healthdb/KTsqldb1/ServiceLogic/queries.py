@@ -28,6 +28,6 @@ def login(uname, pwd, type):    ##type = 'P' for patient, 'D' for doctor
 ## returns a list of all doctors
 def getDocList():
     docList = Doctor.objects.values_list('DoctorID','Name')
-    for ele in docList:
-        print(ele)
+    # for ele in docList:
+    #     print(ele)
     return docList

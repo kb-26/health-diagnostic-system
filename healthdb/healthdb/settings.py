@@ -58,7 +58,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['KTsqldb1\HTMLForms',
-                 'KTsqldb1\ServiceLogic'], ### ADD DIRECTORY HERE
+                 'KTsqldb1\ServiceLogic'],  # ADD DIRECTORY HERE
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

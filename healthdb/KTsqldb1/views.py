@@ -74,3 +74,9 @@ def schedAppointment(request):
         return
     form = SchedAppointment()
     return render(request, 'schedAppointment.html', {'form':form})
+
+def docRegistration(request):
+    if request.method == 'POST':
+        return
+    form = docReg()
+    return render(request, 'docRegistration.html', {'form' : form})
