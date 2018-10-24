@@ -20,6 +20,8 @@ def patLogin(request):
     if request.method == 'POST':
         form = loginForm(request.POST)
         if form.is_valid():
+            for key in form.cleaned_data:
+                print(key)
             uname = form.cleaned_data["uname"]
             pwd = form.cleaned_data["pwd"]
             global res
@@ -28,9 +30,12 @@ def patLogin(request):
                 global UserName
                 UserName = uname
                 return HttpResponseRedirect("PHome")
-            else:
-                return render(request, 'patLogin.html', {'form': form})
-    form = loginForm()
+            # else:
+            #     form.clean()
+            #     for key in form.cleaned_data:
+            #         print(key)
+    else:
+        form = loginForm()
     return render(request, 'patLogin.html', {'form':form})
 
 
@@ -58,8 +63,8 @@ def docLogin(request):
                 return HttpResponseRedirect("DHome")
             else:
                 return render(request, 'docLogin.html', {'form': form})
-
-    form = loginForm()
+    else:
+        form = loginForm()
     return render(request, 'docLogin.html', {'form':form})
 
 def docHome(request):
@@ -77,6 +82,10 @@ def schedAppointment(request):
 
 def docRegistration(request):
     if request.method == 'POST':
-        return
-    form = docReg()
+        form = docReg(request.POST)
+        if form.is_valid():
+            for key, value in request.POST.items():
+                print(key, ':', value)
+    else:
+        form = docReg()
     return render(request, 'docRegistration.html', {'form' : form})
