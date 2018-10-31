@@ -5,7 +5,7 @@ from django.forms.widgets import SelectDateWidget
 from django.core.validators import MaxValueValidator
 
 
-from KTsqldb1.ServiceLogic.queries import getDocList, login
+from KTsqldb1.ServiceLogic.queries import getDocList, login, getDocUname
 from .constants import res
 
 
@@ -58,6 +58,10 @@ class docReg(forms.Form):
 
     def clean(self):
         cd = self.cleaned_data
+        if cd.get('uname') in getDocUname():
+            self.add_error('uname', 'Username already taken')
         if cd.get('pwd') != cd.get('pwd_conf'):
             self.add_error('pwd_conf','passwords do not match')
+        # if len(cd.get('phone')) != 10:
+        #     self.add_error('phone', 'Phone number length should be 10 digits')
         return cd

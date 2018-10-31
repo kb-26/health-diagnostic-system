@@ -4,7 +4,7 @@ from .forms import *
 from .constants import res, UserName
 import sys
 
-from KTsqldb1.ServiceLogic.queries import login
+from KTsqldb1.ServiceLogic.queries import *
 # Create your views here.
 
 def index(request):
@@ -84,8 +84,34 @@ def docRegistration(request):
     if request.method == 'POST':
         form = docReg(request.POST)
         if form.is_valid():
+
+            currIDList = getDocID()
+            lastID = currIDList[-1]
+            lastID = lastID[1:]     # Remove starting 'd'
+            idNum = int(lastID)     # get the number
+            idNum+=1                # and increment it
+
+            newID = str(idNum)
+            while(len(newID)<3):
+                newstr = '0'+newID
+                newID = newstr
+
+            newID = 'd' + newID
+            print("New ID = ", newID)
+
+            argList = []
             for key, value in request.POST.items():
                 print(key, ':', value)
+                if key != 'pwd_conf' and key!= 'csrfmiddlewaretoken':    # not sure if there are any other special values
+                    argList.append(value)
+
+            argList.append(newID)
+
+            for arg in argList:
+                print(arg)
+
+            # Insert new record in table
+            docRegistrationQuery(*argList)
     else:
         form = docReg()
     return render(request, 'docRegistration.html', {'form' : form})
