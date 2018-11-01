@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+
 from .forms import *
 from .constants import res, UserName
 import sys
@@ -111,7 +113,10 @@ def docRegistration(request):
                 print(arg)
 
             # Insert new record in table
-            docRegistrationQuery(*argList)
+            # docRegistrationQuery(*argList)
+            print("Success message")
+            messages.success(request, 'Registration Successful')
+            return HttpResponseRedirect("dRegister")
     else:
         form = docReg()
     return render(request, 'docRegistration.html', {'form' : form})
