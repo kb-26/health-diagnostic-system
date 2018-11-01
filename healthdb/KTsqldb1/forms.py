@@ -43,7 +43,7 @@ class PatHomeForm(forms.Form):
 # Appointment Schedule form
 class SchedAppointment(forms.Form):
     dat = forms.DateField(label= "Date", widget= SelectDateWidget)
-    time = forms.TimeField(label= "Time")
+    #time = forms.DateField(widget=forms.DateInput(attrs={'class':'timepicker'}))
     docs = forms.ChoiceField(widget= forms.Select, choices= getDocList())
 
 #     Doctor Registration

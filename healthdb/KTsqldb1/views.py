@@ -113,7 +113,7 @@ def docRegistration(request):
                 print(arg)
 
             # Insert new record in table
-            # docRegistrationQuery(*argList)
+            docRegistrationQuery(*argList)
             print("Success message")
             messages.success(request, 'Registration Successful')
             return HttpResponseRedirect("dRegister")

@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -24,6 +23,7 @@ SECRET_KEY = 'wkfd77*8g(tf*4$1hb^aj#zk($2dzh4=t1)y#6j=sjk*3c=agn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 ALLOWED_HOSTS = []
 
@@ -58,7 +58,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['KTsqldb1\HTMLForms',
-                 'KTsqldb1\ServiceLogic'],  # ADD DIRECTORY HERE
+                 'KTsqldb1\ServiceLogic',
+                 'assets'],  # ADD DIRECTORY HERE
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,4 +122,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+# for accessing bootstrap offline
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "dist"),
+]
