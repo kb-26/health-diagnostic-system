@@ -111,10 +111,11 @@ def docRegistration(request):
             print("New ID = ", newID)
 
             argList = []
-            for key, value in request.POST.items():
-                print(key, ':', value)
-                if key != 'pwd_conf' and key!= 'csrfmiddlewaretoken':    # not sure if there are any other special values
-                    argList.append(value)
+            cd = form.cleaned_data
+            for key in cd:
+                print(key, ':', cd.get(key))
+                if key != 'pwd_conf':    # not sure if there are any other special values
+                    argList.append(cd.get(key))
 
             argList.append(newID)
 
@@ -122,7 +123,7 @@ def docRegistration(request):
                 print(arg)
 
             # Insert new record in table
-            # docRegistrationQuery(*argList)
+            docRegistrationQuery(*argList)      # Comment out this line when testing to prevent database writes
             print("Success message")
             messages.success(request, 'Registration Successful')
             return HttpResponseRedirect("dRegister")
@@ -141,11 +142,12 @@ def patRegistration(request):
             newID = 'p' + newID
             print("New ID = ", newID)
 
+            # dob_post = request.POST.
             argList = []
-            for key, value in request.POST.items():
-                print(key, ':', value)
-                if key != 'pwd_conf' and key!= 'csrfmiddlewaretoken':    # not sure if there are any other special values
-                    argList.append(value)
+            for key in form.cleaned_data:
+                print(key, ':', form.cleaned_data.get(key))
+                if key != 'pwd_conf':    # not sure if there are any other special values
+                    argList.append(form.cleaned_data.get(key))
 
 
             argList.append(newID)

@@ -24,9 +24,10 @@ def getPatID():
 def patRegistrationQuery(uname, pwd, name, address, dob, patID):
     age = datetime.date.today() - dob
     print("age = ",age)
-    # Patient.objects.create(PatientID= patID, Name= name, Address=address, DOB=dob, Age= age)
-    #
-    # # print(docID)
-    # PatObj = Patient.objects.get(PatientID= patID)
-    # PatientCredentials.objects.create(UserName= uname, Password= pwd, PatientID= PatObj)
+    print("age in days = ", int(age.days))
+    Patient.objects.create(PatientID= patID, Name= name, Address=address, DOB=dob, Age= int(age.days))
+
+    # print(docID)
+    PatObj = Patient.objects.get(PatientID= patID)
+    PatientCredentials.objects.create(UserName= uname, Password= pwd, PatientID= PatObj)
     return
