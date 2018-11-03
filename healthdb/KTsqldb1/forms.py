@@ -96,11 +96,13 @@ class patReg(forms.Form):
 
         # Check if the entered date is valid
 
-        # print("Date = ",cd.get('dob'))
-
         try:
             dat = cd.get('dob')
             print("dat = ", dat)
+            if dat >= datetime.date.today():
+                self.add_error('dob', 'Please Enter A Valid Date')
+                # assert False
+
         except ValueError:
             self.add_error('dob', 'Please Enter A Valid Date')
 

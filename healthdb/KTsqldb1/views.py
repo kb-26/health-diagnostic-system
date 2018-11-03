@@ -156,7 +156,7 @@ def patRegistration(request):
                 print(arg)
 
             # Insert new record in table
-            patRegistrationQuery(*argList)
+            # patRegistrationQuery(*argList)
             # print("Success message")
             messages.success(request, 'Registration Successful')
             return HttpResponseRedirect("pRegister")
