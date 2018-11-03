@@ -1,0 +1,5 @@
+1. Validate the dates being entered
+2. Patient Registration
+3. Calculate Age
+4. Link with Mongo
+5. View Appointments
