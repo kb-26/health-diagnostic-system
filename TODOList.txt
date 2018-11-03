@@ -2,4 +2,4 @@
 2. Patient Registration
 3. Calculate Age
 4. Link with Mongo
-5. View Appointments
+5. View Appointments 
