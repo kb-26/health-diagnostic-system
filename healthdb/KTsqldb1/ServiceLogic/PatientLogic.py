@@ -11,6 +11,7 @@ def getDOBYears():
     YEARS = range(init_year, datetime.date.today().year+1)
     return YEARS
 
+
 def getPatUname():
     patUnameList = PatientCredentials.objects.values_list('UserName', flat= True)
     return list(patUnameList)

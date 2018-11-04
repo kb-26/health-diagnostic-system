@@ -1,6 +1,20 @@
 from django.db import connection
-from KTsqldb1.models import Doctor, DoctorCredentials
 
+
+# calculate the new number of ID
+def getNewIDNum(IDList):
+    lastID = IDList[-1]
+    lastID = lastID[1:]  # Remove starting 'd'
+    idNum = int(lastID)  # get the number
+    idNum += 1  # and increment it
+
+    newID = str(idNum)
+    while (len(newID) < 3):
+        newstr = '0' + newID
+        newID = newstr
+    return newID
+
+# login function
 def login(uname, pwd, type):    ##type = 'P' for patient, 'D' for doctor
     if(type=='P'):
         with connection.cursor() as cursor:
@@ -24,29 +38,3 @@ def login(uname, pwd, type):    ##type = 'P' for patient, 'D' for doctor
             if not res or not len(res):
                 return False
             return True
-
-## returns a list of all doctors
-def getDocList():
-    docList = Doctor.objects.values_list('DoctorID','Name')
-    # for ele in docList:
-    #     print(ele)
-    return docList
-
-#   Return List of docID
-def getDocID():
-    docIDList = Doctor.objects.values_list('DoctorID',flat= True)
-    return list(docIDList)
-
-#   Return list of Doctor Usernames
-def getDocUname():
-    docUnameList = DoctorCredentials.objects.values_list('UserName', flat= True)
-    return list(docUnameList)
-
-#   Called for new Doctor Registration
-def docRegistrationQuery(uname, pwd, name, clinic, phone, docID):
-    Doctor.objects.create(DoctorID= docID, Name= name, Clinic= clinic, Phone= phone)
-
-    # print(docID)
-    docObj = Doctor.objects.get(DoctorID= docID)
-    DoctorCredentials.objects.create(UserName= uname, Password= pwd, DoctorID= docObj)
-    return

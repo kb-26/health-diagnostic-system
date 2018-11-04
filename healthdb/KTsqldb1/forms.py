@@ -5,8 +5,10 @@ from django.forms.widgets import SelectDateWidget
 from django.core.validators import MaxValueValidator
 
 
-from KTsqldb1.ServiceLogic.queries import getDocList, login, getDocUname
+from KTsqldb1.ServiceLogic.queries import login
+from KTsqldb1.ServiceLogic.DoctorLogic import *
 from KTsqldb1.ServiceLogic.PatientLogic import *
+from KTsqldb1.ServiceLogic.AppointmentLogic import *
 
 # from .constants import YEARS
 
@@ -45,9 +47,29 @@ class PatHomeForm(forms.Form):
 
 # Appointment Schedule form
 class SchedAppointment(forms.Form):
-    dat = forms.DateField(label= "Date", widget= SelectDateWidget)
-    #time = forms.DateField(widget=forms.DateInput(attrs={'class':'timepicker'}))
+    dat = forms.DateField(label= "Date", widget= SelectDateWidget(years=getAppointmentYears()))
     docs = forms.ChoiceField(widget= forms.Select, choices= getDocList())
+    # time = forms.DateField(widget=forms.DateInput(attrs={'class':'timepicker'}))
+    def clean(self):
+        cd = self.cleaned_data
+
+        # for key in self.fields:
+        #     print(key, " : ",)
+        for key in cd:
+            print(key, " : ", cd.get(key))
+
+        # Check if the entered date is valid
+        try:
+            dat = cd.get('dat')
+            # time = cd.get('time')
+            # print("time = ", time)
+            # print("dat = ", dat)
+            if dat <= datetime.date.today():
+                self.add_error('dat', 'Please Enter A Valid Date')
+                # assert False
+
+        except ValueError:
+            self.add_error('dat', 'Please Enter A Valid Date')
 
 #     Doctor Registration
 class docReg(forms.Form):
@@ -69,8 +91,10 @@ class docReg(forms.Form):
         # Check that password and confirmation match
         if cd.get('pwd') != cd.get('pwd_conf'):
             self.add_error('pwd_conf','passwords do not match')
-        # if len(cd.get('phone')) != 10:
-        #     self.add_error('phone', 'Phone number length should be 10 digits')
+
+        # Check if the phone number length is 10
+        if len(str(cd.get('phone'))) != 10:
+            self.add_error('phone', 'Phone number length should be 10 digits')
         return cd
 
 # Patient Registration
@@ -106,6 +130,4 @@ class patReg(forms.Form):
         except ValueError:
             self.add_error('dob', 'Please Enter A Valid Date')
 
-        # if len(cd.get('phone')) != 10:
-        #     self.add_error('phone', 'Phone number length should be 10 digits')
         return cd

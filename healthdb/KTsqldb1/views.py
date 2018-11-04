@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 import datetime
 
 from .forms import *
 
 
 from KTsqldb1.ServiceLogic.queries import *
+from KTsqldb1.ServiceLogic.DoctorLogic import *
+from KTsqldb1.ServiceLogic.AppointmentLogic import *
 
 # Create your views here.
 
@@ -79,24 +82,38 @@ def docHome(request):
 
 def schedAppointment(request):
     if request.method=='POST':
-        return
-    form = SchedAppointment()
+        # PERFORM VALIDATIONS FOR UNIQUE CONSTRAINTS
+        form = SchedAppointment(request.POST)
+        if form.is_valid():
+            # Validate the time field
+            time = request.POST.get('time')
+            print("time value from POST = ", time)
+
+            argList=[]
+            argList.append(time)
+            for key in form.cleaned_data:
+                print(key, ':', form.cleaned_data.get(key))
+                argList.append(form.cleaned_data.get(key))
+
+            #TODO: Write code to add patient ID from SESSION
+            argList.append("p002") # TODO: Change this to comply with the above
+
+            print("Arg List")
+            for ele in argList:
+                print(ele)
+
+            try:
+                createAppointment(*argList)
+            except ValidationError:
+                messages.error(request, "Appointment could not be scheduled, please choose another time")
+                return HttpResponseRedirect('Schedule')
+
+            messages.success(request, "Appointment Scheduled")
+            return HttpResponseRedirect('Schedule')
+
+    else:
+        form = SchedAppointment()
     return render(request, 'schedAppointment.html', {'form':form})
-
-# calculate the new number of ID
-def getNewIDNum(IDList):
-    lastID = IDList[-1]
-    lastID = lastID[1:]  # Remove starting 'd'
-    idNum = int(lastID)  # get the number
-    idNum += 1  # and increment it
-
-    newID = str(idNum)
-    while (len(newID) < 3):
-        newstr = '0' + newID
-        newID = newstr
-    return newID
-
-
 
 # Doctor Registration
 def docRegistration(request):
@@ -156,7 +173,10 @@ def patRegistration(request):
                 print(arg)
 
             # Insert new record in table
-            # patRegistrationQuery(*argList)
+            patRegistrationQuery(*argList)
+
+
+
             # print("Success message")
             messages.success(request, 'Registration Successful')
             return HttpResponseRedirect("pRegister")

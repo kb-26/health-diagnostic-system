@@ -60,8 +60,9 @@
         </div>
      {% endfor %}
 
+    <label>Time: </label>
+    <br>
     <div class="input-group clockpicker">
-      <label>Time:</label>
       <input name="time" type="text" class="form-control" value="09:30">
       <span class="input-group-addon">
           <span class="glyphicon glyphicon-time"></span>
@@ -71,6 +72,24 @@
     <script type="text/javascript">
       $('.clockpicker').clockpicker();
     </script>
+
+    {#Message Displaying#}
+        {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+{#                  Error Messages :   #}
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                      <font color="red" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</font>
+                      
+{#                    Info/Sucess Messages : #}
+                  {% else %}
+                    <font color="green" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</font>
+                  {% endif %}
+
+              {% endfor %}
+          </ul>
+        {% endif %}
+
     <br>
     <button type="submit" class="btn btn-primary">Cancel</button>
     <button type="submit" class="btn btn-primary float-right">Submit</button>
