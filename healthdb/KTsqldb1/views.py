@@ -19,9 +19,6 @@ def index(request):
 def homePage(request):
     return render(request, 'index.html')
 
-def patientHome(request):
-    return render(request, 'patHome.html')
-
 def patLogin(request):
     if request.method == 'POST':
         form = loginForm(request.POST)
@@ -50,7 +47,7 @@ def patHome(request):
         if 'sched' in request.POST:
             return HttpResponseRedirect('Schedule')
         else:
-            return HttpResponseRedirect('View')
+            return HttpResponseRedirect('viewAppointments')
 
     return render(request, 'patHome.html', {'patname': UserName})
 
@@ -79,6 +76,13 @@ def docHome(request):
     form = DocHomeForm()
     
     return render(request, 'docHome.html', {'docname': UserName},{'form':form})
+
+def viewAppointment(request):
+    Dlist, DocIDList = getPendingAppointments('p002')
+    for gp in Dlist:
+        print(gp)
+
+    return render(request, 'viewAppointment.html', {'pendingList':Dlist}, {'docIDList':DocIDList})
 
 def schedAppointment(request):
     if request.method=='POST':

@@ -80,7 +80,7 @@
 {#                  Error Messages :   #}
                   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                       <font color="red" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</font>
-                      
+
 {#                    Info/Sucess Messages : #}
                   {% else %}
                     <font color="green" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</font>

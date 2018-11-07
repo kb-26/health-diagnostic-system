@@ -7,55 +7,278 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 {#  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">#}
   <title>Appointments</title>
+  <style>
+    body {
+      margin: 0;
+      min-width: 250px;
+    }
+
+    /* Include the padding and border in an element's total width and height */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Remove margins and padding from the list */
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Style the list items */
+    ul li {
+      cursor: pointer;
+      position: relative;
+      padding: 12px 8px 12px 40px;
+      list-style-type: none;
+      background: #e6bbee;
+      font-size: 18px;
+      transition: 0.2s;
+
+      /* make the list items unselectable */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Set all odd list items to a different color (zebra-stripes) */
+    ul li:nth-child(odd) {
+      background: #f9f9f9;
+    }
+
+    /* Darker background-color on hover */
+    ul li:hover {
+      background: #ddd;
+    }
+
+    /* When clicked on, add a background color and strike out text */
+    ul li.checked {
+      background: #888;
+      color: #fff;
+      text-decoration: line-through;
+    }
+
+    /* Style the details button */
+    .details {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 12px 16px 12px 16px;
+    }
+
+    .details:hover {
+      background-color: #545bf4;
+      color: white;
+    }
+
+    /* Style the header */
+    .header {
+      background-color: #f40019;
+      padding: 30px 40px;
+      color: white;
+      text-align: center;
+    }
+
+    /* Clear floats after the header */
+    .header:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    /* Style the input */
+    input {
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      width: 75%;
+      padding: 10px;
+      float: left;
+      font-size: 16px;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        -webkit-animation-name: fadeIn; /* Fade in the background */
+        -webkit-animation-duration: 0.4s;
+        animation-name: fadeIn;
+        animation-duration: 0.4s
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: fixed;
+        bottom: 0;
+        background-color: #fefefe;
+        width: 100%;
+        -webkit-animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideIn;
+        animation-duration: 0.4s
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    .modal-body {padding: 2px 16px;}
+
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+    }
+
+    @keyframes slideIn {
+        from {bottom: -300px; opacity: 0}
+        to {bottom: 0; opacity: 1}
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0}
+        to {opacity: 1}
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0}
+        to {opacity: 1}
+    }
+
+  </style>
 </head>
 
 {% load widget_tweaks %}
-<h1>Patient Login</h1>
-<form action="/healthdb/plogin" method="post">
-    {% csrf_token %}
+<div id="title" class="header">
+  <h2 style="margin:5px">Your Appointments</h2>
+{#  <input type="text" id="myInput" placeholder="Title...">#}
+{#  <span onclick="newElement()" class="addBtn">Add</span>#}
+</div>
 
-    <!-- Render hidden fields-->
-      {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field }}
-      {% endfor %}
 
-    <!-- Field alerts -->
-      {% if form.non_field_errors %}
-        <div class="alert alert-danger" role="alert">
-          {% for error in form.non_field_errors %}
-            {{ error }}
-          {% endfor %}
-        </div>
-      {% endif %}
+<ul id="pending">
+    {% for docname in pendingList %}
+        <li>Your appointment with {{ docname }}</li>
+    {% endfor %}
+</ul>
 
-    <!-- Render visible  fields-->
-     {% for field in form.visible_fields %}
-        <div class="form-group">
-          {{ field.label_tag }}
+<!-- The Modal -->
+<div id="AppDetails" class="modal"">
 
-          <!-- Display error messages if any-->
-          {% if form.is_bound %}
-            {% if field.errors %}
-              {% render_field field class="form-control is-invalid" %}
-              {% for error in field.errors %}
-                <div class="invalid-feedback">
-                  {{ error }}
-                </div>
-              {% endfor %}
-            {% else %}
-              {% render_field field class="form-control is-valid" %}
-            {% endif %}
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+{#        Display Doctor Name#}
+        <h2 id="DisplayDocName"></h2>
+    </div>
+    <div class="modal-body">
+      <p id="displayDocID">Some text in the Modal Body</p>
+      <p>Some other text...</p>
+    </div>
+    <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div>
+  </div>
 
-          {% else %}
-            {% render_field field class="form-control" %}
-          {% endif %}
+</div>
 
-          {% if field.help_text %}
-            <small class="form-text text-muted">{{ field.help_text }}</small>
-          {% endif %}
-        </div>
-     {% endfor %}
+<script>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    // Create a "Details" button and append it to each list item
+    var myNodelist = document.getElementsByTagName("LI");
+    var i;
+    var docIDList = "{{ docIDList }}";
+    var docdisplayNameList = "{{ pendingList}}";
+
+    for (i = 0; i < myNodelist.length; i++) {
+      var span = document.createElement("SPAN");
+      var txt = document.createTextNode("Details");
+      span.className = "details";
+      span.dataset.docID = docIDList[i];    {# Assign Doctor ID #}
+      span.dataset.docName = docdisplayNameList[i]
+      span.appendChild(txt);
+      myNodelist[i].appendChild(span);
+    }
+
+    // Click on a details button to get appointment details in modal
+    var detailButtons = document.getElementsByClassName("details");
+
+    // Get the modal
+    var modal = document.getElementById('AppDetails');
+
+    // Get the <span> element that closes the modal
+    var modalspan = document.getElementsByClassName("close")[0];
+
+
+    for (i = 0; i < detailButtons.length; i++) {
+      detailButtons[i].onclick = function() {
+          {#var docdisplayName = docList.get();#}
+          {#var docDisplayName = docList.get(i);#}
+          {#console.log("name = ", docDisplayName);#}
+          modal.style.display = "block";
+          document.getElementById("DisplayDocName").innerHTML = this.dataset.docName;
+      };
+      var docID = detailButtons[i].dataset.docID;
+
+    }
+
+    function modalLoad(){
+        document.getElementById("DisplayDocName").innerHTML = "Header";
+    }
+
+
+
+    {#// When the user clicks the button, open the mo dal#}
+    {#btn.onclick = function() {#}
+    {#    modal.style.display = "block";#}
+    {#}#}
+
+    // When the user clicks on <span> (x), close the modal
+    modalspan.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
 </html>
+

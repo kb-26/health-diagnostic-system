@@ -18,6 +18,9 @@ def getDocUname():
     docUnameList = DoctorCredentials.objects.values_list('UserName', flat= True)
     return list(docUnameList)
 
+def getDocNames():
+    docnameList = Doctor.objects.values_list('Name', flat=True)
+    return list(docnameList)
 #   Called for new Doctor Registration
 def docRegistrationQuery(uname, pwd, name, clinic, phone, docID) :
     Doctor.objects.create(DoctorID= docID, Name= name, Clinic= clinic, Phone= phone)

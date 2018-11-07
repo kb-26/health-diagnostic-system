@@ -3,3 +3,4 @@
 3. Calculate Age
 4. Link with Mongo
 5. View Appointments 
+6. Replace references to Patient2 with sessions object

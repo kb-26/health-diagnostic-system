@@ -58,18 +58,23 @@ class SchedAppointment(forms.Form):
         for key in cd:
             print(key, " : ", cd.get(key))
 
-        # Check if the entered date is valid
-        try:
-            dat = cd.get('dat')
-            # time = cd.get('time')
-            # print("time = ", time)
-            # print("dat = ", dat)
-            if dat <= datetime.date.today():
-                self.add_error('dat', 'Please Enter A Valid Date')
-                # assert False
-
-        except ValueError:
+        # Check if the entered date is valid:
+        dat = cd.get('dat')
+        if dat is not None and dat <= datetime.date.today():
             self.add_error('dat', 'Please Enter A Valid Date')
+
+        # try:
+        #     dat = cd.get('dat')
+        #     # time = cd.get('time')
+        #     # print("time = ", time)
+        #     print("dat = ", dat)
+        #     assert False
+        #     if dat <= datetime.date.today():
+        #         self.add_error('dat', 'Please Enter A Valid Date')
+        #         # assert False
+        #
+        # except ValueError:
+        #     self.add_error('dat', 'Please Enter A Valid Date')
 
 #     Doctor Registration
 class docReg(forms.Form):
@@ -110,6 +115,9 @@ class patReg(forms.Form):
     def clean(self):
         cd = self.cleaned_data
 
+        for key in cd:
+            print(key, ' : ', cd.get(key))
+        # assert False
         # Check that Username doesn't already exist
         if cd.get('uname') in getPatUname():
             self.add_error('uname', 'Username already taken')
@@ -118,16 +126,27 @@ class patReg(forms.Form):
         if cd.get('pwd') != cd.get('pwd_conf'):
             self.add_error('pwd_conf','passwords do not match')
 
-        # Check if the entered date is valid
-
-        try:
-            dat = cd.get('dob')
-            print("dat = ", dat)
-            if dat >= datetime.date.today():
-                self.add_error('dob', 'Please Enter A Valid Date')
-                # assert False
-
-        except ValueError:
+        # Check if the entered date is valid :
+        dat = cd.get('dob')
+        if dat is not None and dat >= datetime.date.today():
             self.add_error('dob', 'Please Enter A Valid Date')
 
+        # Commented out since new BootStrap version automatically checks for date
+        # try:
+        #     dat = cd.get('dob')
+        #     if dat is None:
+        #         self.add_error('dob', 'Please enter a valid Date')
+        #     # print("dob = ", dat)
+        #     # assert False
+        #     elif dat >= datetime.date.today():
+        #         self.add_error('dob', 'Please Enter A Valid Date')
+        #         # assert False
+        #
+        # except ValueError:
+        #     self.add_error('dob', 'Please Enter A Valid Date')
+
+
         return cd
+
+class viewAppointment(forms.Form):
+    i=1

@@ -1,4 +1,6 @@
 # Queries related to Appointment
+from typing import List
+
 from KTsqldb1.models import Appointment, Patient, Doctor
 from .queries import *
 
@@ -27,6 +29,24 @@ def createAppointment(time, date, docID, patID):
     newApp = Appointment(AppointmentID= newID, AppDate= date, Time= time, docID=docObj, patID=PatObj)
     newApp.full_clean()
     newApp.save()
-
     # newApp = Appointment.objects.create(AppointmentID=newID, AppDate=date, Time=time, docID=docObj, patID=PatObj)
-    return
+    return None
+
+# Return Doctor Names of Pending appointments for a patient
+def getPendingAppointments(patID):
+    appObjList = Appointment.objects.filter(patID= patID)
+    # appList = list(appList)
+    print("Applist")
+    pendingApps = []
+    pendingApp_docIDs: List[str] = []
+    for app in appObjList:
+        # print (app.docID)
+        nam = app.docID.Name
+        print(nam)
+        pendingApps.append(nam)
+        
+        docID = app.docID.DoctorID
+        print(docID)
+        pendingApp_docIDs.append(docID)
+
+    return pendingApps, pendingApp_docIDs
