@@ -196,7 +196,7 @@
 </ul>
 
 <!-- The Modal -->
-<div id="AppDetails" class="modal"">
+<div id="AppDetails" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
@@ -221,15 +221,15 @@
     // Create a "Details" button and append it to each list item
     var myNodelist = document.getElementsByTagName("LI");
     var i;
-    var docIDList = "{{ docIDList }}";
-    var docdisplayNameList = "{{ pendingList}}";
+    var doctorIDs = {{ docIDList }};
+    var docdisplayNameList = {{ pendingList | safe}};
 
     for (i = 0; i < myNodelist.length; i++) {
       var span = document.createElement("SPAN");
       var txt = document.createTextNode("Details");
       span.className = "details";
-      span.dataset.docID = docIDList[i];    {# Assign Doctor ID #}
-      span.dataset.docName = docdisplayNameList[i]
+      span.dataset.docID = doctorIDs[i];
+      span.dataset.docName = docdisplayNameList[i];
       span.appendChild(txt);
       myNodelist[i].appendChild(span);
     }
@@ -245,10 +245,9 @@
 
 
     for (i = 0; i < detailButtons.length; i++) {
-      detailButtons[i].onclick = function() {
-          {#var docdisplayName = docList.get();#}
-          {#var docDisplayName = docList.get(i);#}
-          {#console.log("name = ", docDisplayName);#}
+
+
+        detailButtons[i].onclick = function() {
           modal.style.display = "block";
           document.getElementById("DisplayDocName").innerHTML = this.dataset.docName;
       };
@@ -265,7 +264,7 @@
     {#// When the user clicks the button, open the mo dal#}
     {#btn.onclick = function() {#}
     {#    modal.style.display = "block";#}
-    {#}#}
+    {# } #}
 
     // When the user clicks on <span> (x), close the modal
     modalspan.onclick = function() {

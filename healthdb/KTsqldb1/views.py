@@ -75,12 +75,16 @@ def docHome(request):
         return
     form = DocHomeForm()
     
-    return render(request, 'docHome.html', {'docname': UserName},{'form':form})
+    return render(request, 'docHome.html', {'docname': UserName}, {'form':form})
 
 def viewAppointment(request):
     Dlist, DocIDList = getPendingAppointments('p002')
-    for gp in Dlist:
-        print(gp)
+    # for gp in Dlist:
+    #     print(gp)
+
+    print("In View : ")
+    for id in DocIDList:
+        print(id)
 
     return render(request, 'viewAppointment.html', {'pendingList':Dlist}, {'docIDList':DocIDList})
 
