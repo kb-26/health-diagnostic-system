@@ -190,7 +190,7 @@
 
 
 <ul id="pending">
-    {% for docname in pendingList %}
+    {% for docname in docDisplayNameList %}
         <li>Your appointment with {{ docname }}</li>
     {% endfor %}
 </ul>
@@ -206,11 +206,13 @@
         <h2 id="DisplayDocName"></h2>
     </div>
     <div class="modal-body">
-      <p id="displayDocID">Some text in the Modal Body</p>
-      <p>Some other text...</p>
+      <p id="displayDocID"></p>
+      <p id="diplayAppDate"></p>
+      <p id="diplayAppTime"></p>
+      <p id="diplayAppStatus"></p>
     </div>
     <div class="modal-footer">
-      <h3>Modal Footer</h3>
+      <h3>HealthDB</h3>
     </div>
   </div>
 
@@ -221,8 +223,12 @@
     // Create a "Details" button and append it to each list item
     var myNodelist = document.getElementsByTagName("LI");
     var i;
-    var doctorIDs = {{ docIDList }};
-    var docdisplayNameList = {{ pendingList | safe}};
+    var doctorIDs = {{ docDisplayIDList | safe }};
+    var docdisplayNameList = {{ docDisplayNameList | safe}};
+    var AppDateList = {{ AppDateList | safe }};
+    var AppTimeList = {{ AppTimeList | safe }};
+    var AppStatusList = {{ AppStatusList | safe }};
+
 
     for (i = 0; i < myNodelist.length; i++) {
       var span = document.createElement("SPAN");
@@ -230,6 +236,9 @@
       span.className = "details";
       span.dataset.docID = doctorIDs[i];
       span.dataset.docName = docdisplayNameList[i];
+      span.dataset.appDate = AppDateList[i];
+      span.dataset.appTime = AppTimeList[i];
+      span.dataset.appStatus = AppStatusList[i];
       span.appendChild(txt);
       myNodelist[i].appendChild(span);
     }
@@ -250,6 +259,10 @@
         detailButtons[i].onclick = function() {
           modal.style.display = "block";
           document.getElementById("DisplayDocName").innerHTML = this.dataset.docName;
+          document.getElementById("displayDocID").innerHTML = "Doctor ID : "+this.dataset.docID;
+          document.getElementById("diplayAppDate").innerHTML = "Appointment Date : "+this.dataset.appDate;
+          document.getElementById("diplayAppTime").innerHTML = "Time : "+this.dataset.appTime;
+          document.getElementById("diplayAppStatus").innerHTML = "Status : "+this.dataset.appStatus;
       };
       var docID = detailButtons[i].dataset.docID;
 

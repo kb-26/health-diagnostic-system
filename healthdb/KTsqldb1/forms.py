@@ -38,7 +38,7 @@ class loginForm(forms.Form):
 # Doctor home page
 class DocHomeForm(forms.Form):
     pendingApp = forms.CharField(label="Pending Appointments ",widget=forms.Select(choices=FRUIT_CHOICES))
-    reqApp = forms.CharField(label="Appointment Requests ",widget=forms.Select(choices='Select'))
+    reqApp = forms.CharField(label="Appointment Requests ",widget=forms.Select(choices=FRUIT_CHOICES))
 
 # Patient Home Form
 # No fields as of now

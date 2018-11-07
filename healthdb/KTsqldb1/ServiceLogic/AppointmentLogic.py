@@ -32,21 +32,38 @@ def createAppointment(time, date, docID, patID):
     # newApp = Appointment.objects.create(AppointmentID=newID, AppDate=date, Time=time, docID=docObj, patID=PatObj)
     return None
 
-# Return Doctor Names of Pending appointments for a patient
-def getPendingAppointments(patID):
+# Return Doctor Names, DoctorID, and Appointment objects for a patient
+def getAppointments(patID):
     appObjList = Appointment.objects.filter(patID= patID)
     # appList = list(appList)
     print("Applist")
-    pendingApps = []
-    pendingApp_docIDs: List[str] = []
+    apps_DocNames = []
+    apps_DocIDs: List[str] = []
+    apps_Dates = []
+    apps_Times = []
+    apps_Status = []
     for app in appObjList:
         # print (app.docID)
         nam = app.docID.Name
         print(nam)
-        pendingApps.append(nam)
+        apps_DocNames.append(nam)
         
         docID = app.docID.DoctorID
         print(docID)
-        pendingApp_docIDs.append(docID)
+        apps_DocIDs.append(docID)
 
-    return pendingApps, pendingApp_docIDs
+        dat = app.AppDate
+        apps_Dates.append(str(dat))
+        print(dat)
+
+        time = app.Time
+        apps_Times.append(str(time))
+        print(time)
+
+        stat = app.Status
+        if stat:
+            apps_Status.append("Completed")
+        else:
+            apps_Status.append("Pending")
+
+    return apps_DocNames, apps_DocIDs, apps_Dates, apps_Times, apps_Status
