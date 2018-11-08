@@ -21,6 +21,8 @@ FRUIT_CHOICES= [
     ('honeydew', 'Honeydews'),
     ]
 
+
+
 # Basic login form
 class loginForm(forms.Form):
     uname = forms.CharField(label="Username ", max_length=30)
@@ -37,8 +39,9 @@ class loginForm(forms.Form):
 
 # Doctor home page
 class DocHomeForm(forms.Form):
-    pendingApp = forms.CharField(label="Pending Appointments ",widget=forms.Select(choices=FRUIT_CHOICES))
-    reqApp = forms.CharField(label="Appointment Requests ",widget=forms.Select(choices=FRUIT_CHOICES))
+    appointments = forms.ChoiceField(label=" ",choices= getAppointmentDisplay_Doctor(), widget= forms.RadioSelect())
+    # pendingApp = forms.CharField(label="Pending Appointments ",widget=forms.Select(choices=FRUIT_CHOICES))
+    # reqApp = forms.CharField(label="Appointment Requests ",widget=forms.Select(choices=FRUIT_CHOICES ))
 
 # Patient Home Form
 # No fields as of now

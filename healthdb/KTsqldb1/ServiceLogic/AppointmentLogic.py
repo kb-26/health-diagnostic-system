@@ -32,7 +32,7 @@ def createAppointment(time, date, docID, patID):
     # newApp = Appointment.objects.create(AppointmentID=newID, AppDate=date, Time=time, docID=docObj, patID=PatObj)
     return None
 
-# Return Doctor Names, DoctorID, and Appointment objects for a patient
+# Return Doctor Names, DoctorID, and other appointment details for a patient
 def getAppointments(patID):
     appObjList = Appointment.objects.filter(patID= patID)
     # appList = list(appList)
@@ -67,3 +67,58 @@ def getAppointments(patID):
             apps_Status.append("Pending")
 
     return apps_DocNames, apps_DocIDs, apps_Dates, apps_Times, apps_Status
+
+# Return Appointment ID, Patient Names, PatientID, and other appointment details for a doctor
+def getAppointments_Doctor(docID):
+    appObjList = Appointment.objects.filter(docID= docID)
+    print("Applist_Doctors")
+    apps_appIDs = []
+    apps_PatNames = []
+    apps_PatIDs: List[str] = []
+    apps_Dates = []
+    apps_Times = []
+    apps_Status = []
+
+    for app in appObjList:
+        # print (app.docID)
+        appID = app.AppointmentID
+        apps_appIDs.append(appID)
+        print(appID)
+
+        nam = app.patID.Name
+        print(nam)
+        apps_PatNames.append(nam)
+
+        patID = app.patID.PatientID
+        print(patID)
+        apps_PatIDs.append(patID)
+
+        dat = app.AppDate
+        apps_Dates.append(str(dat))
+        print(dat)
+
+        time = app.Time
+        apps_Times.append(str(time))
+        print(time)
+
+        stat = app.Status
+        if stat:
+            apps_Status.append("Completed")
+        else:
+            apps_Status.append("Pending")
+
+    return apps_appIDs, apps_PatNames, apps_PatIDs, apps_Dates, apps_Times, apps_Status
+
+# Gets appointment details for doctor in format for Radio Button
+def getAppointmentDisplay_Doctor():
+    apps_appIDs, apps_PatNames, apps_PatIDs, apps_Dates, apps_Times, apps_Status = getAppointments_Doctor('d001')
+
+    # Get suitable format for the Radio Button Display
+    displayList = []
+    for patName, dat, time in zip(apps_PatNames, apps_Dates, apps_Times):
+        displayList.append("Appointment with " + patName + ", (dated " + dat + ") at " + time)
+
+    for ele in displayList:
+        print(ele)
+    doc_appList = zip(apps_appIDs, displayList)
+    return doc_appList

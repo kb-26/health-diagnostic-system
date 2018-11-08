@@ -71,6 +71,8 @@ def docLogin(request):
     return render(request, 'docLogin.html', {'form':form})
 
 def docHome(request):
+
+
     if request.method=='POST':
         return
     form = DocHomeForm()
