@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>symptopmsn</title>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+    <!-- <hr>
+    <h2> total symptymps : {{result['count']}} </h2>
+    <hr> -->
+    <table>
+      <tr><th>Symptopm ID</th><th>Symptopm name</th></tr>
+    {% for symp in result['all_sym'] %}
+      <tr><th>{{symp['sym_id']}}</th>   <th>{{symp['sym_name']}}</th></tr>
+    {% endfor %}
+    </table>
+    <form action = "{{url_for('home')}}" method = "POST">
+         <p>enter the symptopms:</p>
+         <input type="text" name="sym"><br>
+          <input type = "submit" value = "submit" />
+    </form>
+    {% endblock %}
+  </body>
+</html>
