@@ -9,7 +9,7 @@ from KTsqldb1.ServiceLogic.queries import login
 from KTsqldb1.ServiceLogic.DoctorLogic import *
 from KTsqldb1.ServiceLogic.PatientLogic import *
 from KTsqldb1.ServiceLogic.AppointmentLogic import *
-
+from KTsqldb1.ServiceLogic.TreatmentLogic import *
 # from .constants import YEARS
 
 
@@ -39,7 +39,7 @@ class loginForm(forms.Form):
 
 # Doctor home page
 class DocHomeForm(forms.Form):
-    appointments = forms.ChoiceField(label=" ",choices= getAppointmentDisplay_Doctor(), widget= forms.RadioSelect())
+    appointments = forms.ChoiceField(label=" ",choices= getAppointmentDisplay_Doctor('d001'), widget= forms.RadioSelect())
     # pendingApp = forms.CharField(label="Pending Appointments ",widget=forms.Select(choices=FRUIT_CHOICES))
     # reqApp = forms.CharField(label="Appointment Requests ",widget=forms.Select(choices=FRUIT_CHOICES ))
 
@@ -153,3 +153,18 @@ class patReg(forms.Form):
 
 class viewAppointment(forms.Form):
     i=1
+
+class treatmentForm(forms.Form):
+    symptoms_list = forms.MultipleChoiceField(
+        required= True,
+        widget= forms.CheckboxSelectMultiple,
+        choices= getSymptomsList(),
+    )
+
+    def clean(self):
+        cd = self.cleaned_data
+        if cd.get('symptoms_list') is None:
+            self.add_error('symptoms_list', 'Please select the symptoms')
+
+        return cd
+

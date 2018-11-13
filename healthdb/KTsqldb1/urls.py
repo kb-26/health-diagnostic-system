@@ -12,4 +12,5 @@ urlpatterns = [
     path('dRegister', views.docRegistration, name= "DoctorRegistration"),
     path('pRegister', views.patRegistration, name= "PatientRegistration"),
     path('viewAppointments', views.viewAppointment, name= "ViewAppointment"),
+    path('treatment', views.treatmentPage, name= 'Treatment'),
 ]

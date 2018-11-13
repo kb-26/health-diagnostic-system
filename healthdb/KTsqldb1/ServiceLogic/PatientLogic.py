@@ -32,3 +32,8 @@ def patRegistrationQuery(uname, pwd, name, address, dob, patID):
     PatObj = Patient.objects.get(PatientID= patID)
     PatientCredentials.objects.create(UserName= uname, Password= pwd, PatientID= PatObj)
     return
+
+# return PatID of a username
+def getpatientID(uname):
+    credObj = PatientCredentials.objects.get(UserName= uname)
+    return credObj.PatientID.PatientID

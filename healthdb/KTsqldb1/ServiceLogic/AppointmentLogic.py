@@ -1,8 +1,9 @@
 # Queries related to Appointment
 from typing import List
-
+from django.contrib.sessions.models import Session
 from KTsqldb1.models import Appointment, Patient, Doctor
 from .queries import *
+from KTsqldb1.constants import *
 
 import datetime
 
@@ -71,7 +72,7 @@ def getAppointments(patID):
 # Return Appointment ID, Patient Names, PatientID, and other appointment details for a doctor
 def getAppointments_Doctor(docID):
     appObjList = Appointment.objects.filter(docID= docID)
-    print("Applist_Doctors")
+    # print("Applist_Doctors")
     apps_appIDs = []
     apps_PatNames = []
     apps_PatIDs: List[str] = []
@@ -83,23 +84,23 @@ def getAppointments_Doctor(docID):
         # print (app.docID)
         appID = app.AppointmentID
         apps_appIDs.append(appID)
-        print(appID)
+        # print(appID)
 
         nam = app.patID.Name
-        print(nam)
+        # print(nam)
         apps_PatNames.append(nam)
 
         patID = app.patID.PatientID
-        print(patID)
+        # print(patID)
         apps_PatIDs.append(patID)
 
         dat = app.AppDate
         apps_Dates.append(str(dat))
-        print(dat)
+        # print(dat)
 
         time = app.Time
         apps_Times.append(str(time))
-        print(time)
+        # print(time)
 
         stat = app.Status
         if stat:
@@ -110,8 +111,16 @@ def getAppointments_Doctor(docID):
     return apps_appIDs, apps_PatNames, apps_PatIDs, apps_Dates, apps_Times, apps_Status
 
 # Gets appointment details for doctor in format for Radio Button
-def getAppointmentDisplay_Doctor():
-    apps_appIDs, apps_PatNames, apps_PatIDs, apps_Dates, apps_Times, apps_Status = getAppointments_Doctor('d001')
+def getAppointmentDisplay_Doctor(docID):
+    # global SessionKey
+    # if SessionKey == '':
+    #     return []
+    # s = Session.objects.get(pk=SessionKey)
+    # if s is None:
+    #     return []
+    # docID = s.get_decoded().get('ID')
+    print("ID = ",docID)
+    apps_appIDs, apps_PatNames, apps_PatIDs, apps_Dates, apps_Times, apps_Status = getAppointments_Doctor(docID)
 
     # Get suitable format for the Radio Button Display
     displayList = []
@@ -122,3 +131,4 @@ def getAppointmentDisplay_Doctor():
         print(ele)
     doc_appList = zip(apps_appIDs, displayList)
     return doc_appList
+

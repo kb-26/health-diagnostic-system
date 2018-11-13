@@ -29,3 +29,8 @@ def docRegistrationQuery(uname, pwd, name, clinic, phone, docID) :
     docObj = Doctor.objects.get(DoctorID= docID)
     DoctorCredentials.objects.create(UserName= uname, Password= pwd, DoctorID= docObj)
     return
+
+# return DocID of a username
+def getdoctorID(uname):
+    credObj = DoctorCredentials.objects.get(UserName= uname)
+    return credObj.DoctorID.DoctorID

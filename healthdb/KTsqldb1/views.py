@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+
 import datetime
 
 from .forms import *
@@ -10,6 +11,8 @@ from .forms import *
 from KTsqldb1.ServiceLogic.queries import *
 from KTsqldb1.ServiceLogic.DoctorLogic import *
 from KTsqldb1.ServiceLogic.AppointmentLogic import *
+from KTsqldb1.ServiceLogic.TreatmentLogic import *
+from KTsqldb1.ServiceLogic.DiagnosisLogic import *
 
 # Create your views here.
 
@@ -23,8 +26,8 @@ def patLogin(request):
     if request.method == 'POST':
         form = loginForm(request.POST)
         if form.is_valid():
-            for key in form.cleaned_data:
-                print(key)
+            # for key in form.cleaned_data:
+            #     print(key)
             uname = form.cleaned_data["uname"]
             pwd = form.cleaned_data["pwd"]
             global res
@@ -32,6 +35,14 @@ def patLogin(request):
             if res:
                 global UserName
                 UserName = uname
+                global ID
+                ID = getpatientID(uname)
+                # print(request.session.session_key)
+                global SessionKey
+                SessionKey = request.session.session_key
+
+                print("SessionKey = ", SessionKey)
+                request.session["Username"] = uname
                 return HttpResponseRedirect("PHome")
             # else:
             #     form.clean()
@@ -63,6 +74,14 @@ def docLogin(request):
             if res:
                 global UserName
                 UserName = uname
+                global ID
+                ID = getdoctorID(uname)
+                # global SessionKey
+                # SessionKey = request.session.session_key
+                # print("SessionKey = ", SessionKey)
+                # request.session["Username"] = uname
+                # request.session["ID"] = getdoctorID(uname)
+                # print("ID = ", request.session["ID"])
                 return HttpResponseRedirect("DHome")
             else:
                 return render(request, 'docLogin.html', {'form': form})
@@ -74,9 +93,13 @@ def docHome(request):
 
 
     if request.method=='POST':
-        return
+        form = DocHomeForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect("treatment")
+    # data = {'appointments':getAppointmentDisplay_Doctor()}
     form = DocHomeForm()
-    
+    # print("Id is still : ", request.session['ID'])
+    # form.data['appointments'].choices = getAppointmentDisplay_Doctor(request.session['ID'])
     return render(request,
                   'docHome.html',
                   {
@@ -84,7 +107,40 @@ def docHome(request):
                       'form':form,
                   }, )
 
+def treatmentPage(request):
+    if request.method == 'POST':
+        form = treatmentForm(request.POST)
+        if form.is_valid():
+
+            argList = []
+            for key in form.cleaned_data:
+                print(key, ':', form.cleaned_data.get(key))
+                argList.append(form.cleaned_data.get(key))
+            symptomsList = form.cleaned_data.get('symptoms_list')
+            callPredict(symptomsList)
+
+            # # TODO: Write code to add patient ID from SESSION
+            # argList.append("p002")  # TODO: Change this to comply with the above
+            #
+            # print("Arg List")
+            # for ele in argList:
+            #     print(ele)
+            #
+            # try:
+            #     createAppointment(*argList)
+            # except ValidationError:
+            #     messages.error(request, "Appointment could not be scheduled, please choose another time")
+            #     return HttpResponseRedirect('Schedule')
+            #
+            # messages.success(request, "Appointment Scheduled")
+            return HttpResponseRedirect('treatment')
+    else:
+        form = treatmentForm()
+    return render(request, 'treatment.html', {'form':form})
+
+
 def viewAppointment(request):
+
     Dlist, DocIDList, AppDateList, AppTimeList, AppStatusList = getAppointments('p002')
 
     # for gp in Dlist:
@@ -139,7 +195,6 @@ def docRegistration(request):
     if request.method == 'POST':
         form = docReg(request.POST)
         if form.is_valid():
-
 
             currIDList = getDocID()
             newID = getNewIDNum(currIDList)
