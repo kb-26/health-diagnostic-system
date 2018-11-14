@@ -17,7 +17,17 @@ from KTsqldb1.ServiceLogic.DiagnosisLogic import *
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Index of health database")
+    if request.method == 'POST':
+        if 'patreg' in request.POST:
+            return HttpResponseRedirect('pRegister')
+        if 'docreg' in request.POST:
+            return HttpResponseRedirect('dRegister')
+        if 'patlog' in request.POST:
+            return HttpResponseRedirect('plogin')
+        if 'doclog' in request.POST:
+            return HttpResponseRedirect('dlogin')
+
+    return render(request, 'TestHomePage.html')
 
 def homePage(request):
     return render(request, 'index.html')
@@ -107,6 +117,15 @@ def docHome(request):
                       'form':form,
                   }, )
 
+def diagnosisDisplayPage(request):
+    if(request.method == 'POST'):
+        return HttpResponseRedirect("DHome")
+    else:
+        class_num = int(request.session["class_num"])
+        return render(request, 'diagnosisDisplay.html',
+                      {'diseaseNum': class_num,
+                       'diseaseNam': ''})  # replace with 'diseaseNam' : 'class_name'
+
 def treatmentPage(request):
     if request.method == 'POST':
         form = treatmentForm(request.POST)
@@ -115,25 +134,34 @@ def treatmentPage(request):
             argList = []
             for key in form.cleaned_data:
                 print(key, ':', form.cleaned_data.get(key))
-                argList.append(form.cleaned_data.get(key))
+                # argList.append(form.cleaned_data.get(key))
             symptomsList = form.cleaned_data.get('symptoms_list')
-            ca llPredict(symptomsList)
+            class_num = callPredict(symptomsList)
+            request.session["class_num"] = str(class_num)
 
-            # # TODO: Write code to add patient ID from SESSION
-            # argList.append("p002")  # TODO: Change this to comply with the above
+            argList.append("Disease number: "+ str(class_num)) #TODO: replace class_num with the class name
+
+            # # TODO: value needs to be altered using javascript
+            appID = "a001"
+            argList.append(appID)  # TODO: Change this to comply with the above
+
+            print("Arg List")
+            for ele in argList:
+                print(ele)
+
             #
-            # print("Arg List")
-            # for ele in argList:
-            #     print(ele)
+            try:
+                createDiagnosis(*argList)
+            except ValidationError:
+                messages.error(request, "Diagnosis could not be generated, please contact your system admin")
+                return HttpResponseRedirect('treatment')
             #
-            # try:
-            #     createAppointment(*argList)
-            # except ValidationError:
-            #     messages.error(request, "Appointment could not be scheduled, please choose another time")
-            #     return HttpResponseRedirect('Schedule')
-            #
-            # messages.success(request, "Appointment Scheduled")
-            return HttpResponseRedirect('treatment')
+            messages.success(request, "Diagnosis Generated")
+
+            updateStatus(appID) # Update the appointment and change the status
+
+            return HttpResponseRedirect('Diagnosis')
+
     else:
         form = treatmentForm()
     return render(request, 'treatment.html', {'form':form})
@@ -141,7 +169,7 @@ def treatmentPage(request):
 
 def viewAppointment(request):
 
-    Dlist, DocIDList, AppDateList, AppTimeList, AppStatusList = getAppointments('p002')
+    Dlist, DocIDList, AppDateList, AppTimeList, AppStatusList = getAppointments('p001')
 
     # for gp in Dlist:
     #     print(gp)

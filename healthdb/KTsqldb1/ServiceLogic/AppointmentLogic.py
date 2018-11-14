@@ -132,3 +132,13 @@ def getAppointmentDisplay_Doctor(docID):
     doc_appList = zip(apps_appIDs, displayList)
     return doc_appList
 
+# update the status of an appointment that has been successfully treated
+def updateStatus(appid):
+    appointments = Appointment.objects.filter(AppointmentID= appid) # get the appointment object, wrapped by a list
+    for app in appointments:
+        app.Status = True
+        app.full_clean()
+        app.save()
+        break                   # Loop should run only once
+
+    return True # success

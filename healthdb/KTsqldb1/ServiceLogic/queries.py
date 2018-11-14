@@ -4,7 +4,7 @@ from django.db import connection
 # calculate the new number of ID
 def getNewIDNum(IDList):
     lastID = IDList[-1]
-    lastID = lastID[1:]  # Remove starting 'd'
+    lastID = lastID[1:]  # Remove starting character
     idNum = int(lastID)  # get the number
     idNum += 1  # and increment it
 
