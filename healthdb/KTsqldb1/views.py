@@ -117,7 +117,7 @@ def treatmentPage(request):
                 print(key, ':', form.cleaned_data.get(key))
                 argList.append(form.cleaned_data.get(key))
             symptomsList = form.cleaned_data.get('symptoms_list')
-            callPredict(symptomsList)
+            ca llPredict(symptomsList)
 
             # # TODO: Write code to add patient ID from SESSION
             # argList.append("p002")  # TODO: Change this to comply with the above
