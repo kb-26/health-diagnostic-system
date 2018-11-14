@@ -1,9 +1,11 @@
 import numpy
 import pandas
+import tensorflow as tf
 from keras.models import Sequential,load_model,model_from_json
 from keras.layers import Dense,Dropout,Reshape
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
+from keras import backend as K
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import LabelEncoder
@@ -90,12 +92,13 @@ json_file.close()
 m = model_from_json(loaded_model_json)
 # load weights into new model
 m.load_weights("model.h5")
+graph = tf.get_default_graph()
 print("Loaded model from disk")
 #===============================================================================
 
 def predict_diagnosis(x_predict):
     x_predict = numpy.array([x_predict])
-    y_predict = m.predict_classes(x_predict)
-
-    print("Predicted=%s" % (y_predict[0]), le.inverse_transform(y_predict[0]))
-    return y_predict[0], le.inverse_transform(y_predict[0])
+    with graph.as_default():
+        y_predict = m.predict_classes(x_predict)
+        print("Predicted=%s" % (y_predict[0]), le.inverse_transform(y_predict[0]))
+        return y_predict[0], le.inverse_transform(y_predict[0])
