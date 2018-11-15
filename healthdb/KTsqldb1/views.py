@@ -122,9 +122,11 @@ def diagnosisDisplayPage(request):
         return HttpResponseRedirect("DHome")
     else:
         class_num = int(request.session["class_num"])
+        class_name = request.session["class_name"]
+        
         return render(request, 'diagnosisDisplay.html',
                       {'diseaseNum': class_num,
-                       'diseaseNam': ''})  # replace with 'diseaseNam' : 'class_name'
+                       'diseaseNam': class_name})  # replace with 'diseaseNam' : 'class_name'
 
 def treatmentPage(request):
     if request.method == 'POST':
@@ -136,11 +138,12 @@ def treatmentPage(request):
                 print(key, ':', form.cleaned_data.get(key))
                 # argList.append(form.cleaned_data.get(key))
             symptomsList = form.cleaned_data.get('symptoms_list')
-            class_num = callPredict(symptomsList)
+            class_num, class_name = callPredict(symptomsList)
             request.session["class_num"] = str(class_num)
+            request.session["class_name"] = str(class_name)
 
-            argList.append("Disease number: "+ str(class_num)) #TODO: replace class_num with the class name
-
+            # argList.append("Disease number: "+ str(class_num)) #TODO: replace class_num with the class name
+            argList.append(class_name)
             # # TODO: value needs to be altered using javascript
             appID = "a001"
             argList.append(appID)  # TODO: Change this to comply with the above
