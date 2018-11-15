@@ -138,7 +138,7 @@ def treatmentPage(request):
                 print(key, ':', form.cleaned_data.get(key))
                 # argList.append(form.cleaned_data.get(key))
             symptomsList = form.cleaned_data.get('symptoms_list')
-            class_num, class_name = callPredict(symptomsList)
+            class_num, class_name = zip(callPredict(symptomsList))
             request.session["class_num"] = str(class_num)
             request.session["class_name"] = str(class_name)
 
