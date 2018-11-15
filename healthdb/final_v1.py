@@ -102,5 +102,4 @@ def predict_diagnosis(x_predict):
         y_predict = m.predict_classes(x_predict)
         # print("Predicted=%s" % (y_predict[0]), le.inverse_transform(y_predict[0]))
         print(y_predict[0])
-        # return y_predict[0], le.inverse_transform(y_predict[0])
-        return y_predict[0]
+        return y_predict[0], le.inverse_transform(y_predict[0])
