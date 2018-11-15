@@ -18,12 +18,12 @@ def callPredict(x_vector):
     x_vector = getOneHotVector(x_vector)
     print(x_vector)
     print(numpy.array([x_vector]).shape)
-    # class_num, class_name = predict_diagnosis(x_vector)
-    # print(class_name)
-    # return class_num, class_name
-    class_num = predict_diagnosis(x_vector)
-    print(class_num)
-    return class_num
+    class_num, class_name = predict_diagnosis(x_vector)
+    print(class_name)
+    return class_num, class_name
+    # class_num = predict_diagnosis(x_vector)
+    # print(class_num)
+    # return class_num
 
 # list of Diagnosis IDs
 def getDiagID():
