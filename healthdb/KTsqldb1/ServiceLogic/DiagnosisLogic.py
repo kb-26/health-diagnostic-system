@@ -1,5 +1,7 @@
 from final_v1 import predict_diagnosis
 from KTsqldb1.models import Appointment, Patient, Doctor, Diagnosis
+import numpy
+
 from .queries import *
 
 def getOneHotVector(valuelist):
@@ -14,9 +16,14 @@ def getOneHotVector(valuelist):
 
 def callPredict(x_vector):
     x_vector = getOneHotVector(x_vector)
-    class_num, class_name = predict_diagnosis(x_vector)
-    print(class_name)
-    return class_num, class_name
+    print(x_vector)
+    print(numpy.array([x_vector]).shape)
+    # class_num, class_name = predict_diagnosis(x_vector)
+    # print(class_name)
+    # return class_num, class_name
+    class_num = predict_diagnosis(x_vector)
+    print(class_num)
+    return class_num
 
 # list of Diagnosis IDs
 def getDiagID():
@@ -26,17 +33,24 @@ def getDiagID():
 # Creates new Diagnosis
 def createDiagnosis(name, appID):
     currIDList = getDiagID()
-    if currIDList is None:
-        newID = 'diag1'
+    for ele in currIDList:
+        print (ele)
+
+    print (currIDList)
+    # assert False
+    if len(currIDList) == 0:
+        newID = 'g001'      # diagnosis id is 'g'+3 digits
     else:
         newID = getNewIDNum(currIDList)
-        newID = 'diag' + newID
+        newID = 'g' + newID
     print("New ID = ", newID)
 
+# comment
+    a = 5
     AppointmentObj = Appointment.objects.get(AppointmentID= appID)
     # docObj = Doctor.objects.get(DoctorID=docID)
 
-    newDiag = Appointment(AppointmentID= AppointmentObj, Name= name, DiagnosisID= newID)
+    newDiag = Diagnosis(appID=AppointmentObj, Name= name, DiagnosisID= newID)
     newDiag.full_clean()
     newDiag.save()
     # newApp = Appointment.objects.create(AppointmentID=newID, AppDate=date, Time=time, docID=docObj, patID=PatObj)
